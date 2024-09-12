@@ -8,13 +8,7 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <title>Documentos</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://apis.google.com/js/platform.js" async defer>
-
-function onSignIn(googleUser) {
- 
-}
-    </script>
-
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <br>
@@ -27,17 +21,41 @@ function onSignIn(googleUser) {
     <center>
         <h1>Documentos</h1>
     
-    <div class='g-sign-in-button'>
-        <div class=content-wrapper>
-        <div class='logo-wrapper'>  
-          <img src='https://developers.google.com/identity/images/g-logo.png'>
-          </div>  
-          <span class='text-container'> 
-            <span>Sign in with Google</span>
-          </span>
-        </div>  
-      </div>
+        <div id="g_id_onload"
+            data-client_id="TU_CLIENT_ID"
+            data-callback="handleCredentialResponse">
+        </div>
+
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+        <div class="g-sign-in-button" onclick="signIn()">
+            <div class="content-wrapper">
+                <div class="logo-wrapper">
+                    <img src="https://developers.google.com/identity/images/g-logo.png">
+                </div>
+                <span class="text-container">
+                    <span>Sign in with Google</span>
+                </span>
+            </div>
+        </div>
     </center>  
-  
+
+    <script>
+        function handleCredentialResponse(response) {
+            // El token de ID está en response.credential
+            console.log("ID Token: " + response.credential);
+        }
+
+        function signIn() {
+            google.accounts.id.prompt();
+        }
+
+        function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId());
+            console.log('Full Name: ' + profile.getName());
+            console.log('Email: ' + profile.getEmail());
+        }
+    </script>
 </body>
 </html>
